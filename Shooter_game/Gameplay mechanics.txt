@@ -1,0 +1,47 @@
+Step 1: make game window 
+
+Step 2: add a background image
+
+Step 3: create a player charicter
+
+Step 4: Get the player charicter added to the game
+
+Step 5: make the player movable
+
+
+
+_____________________________________________
+
+
+Gameplay Mechanics:
+
+- Player controls a spaceship that can move left and right, possibly up and down as well.
+- Enemies appear in formations and move in patterns, shooting at the player.
+- The player shoots back to destroy enemies.
+- There could be power-ups, special abilities, or different types of enemies.
+
+
+Level Design:
+
+- Progression through levels or waves of enemies.
+- Increasing difficulty with each level.
+- Possibly include boss battles.
+
+
+
+Graphics and Sound:
+
+- Space-themed backgrounds and spaceship/enemy designs.
+- Explosions and shooting effects.
+- Background music and sound effects for shooting, explosions, and power-ups.
+
+
+Tools and Libraries:
+
+Pygame is a good choice for this type of game. It's a Python library that's simple to use and powerful enough for 2D games.
+Additional Features:
+
+Score system.
+
+- Lives or health bar.
+- High score table.
