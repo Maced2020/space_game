@@ -1,6 +1,7 @@
 import pygame
 import random
 import os
+import time
 
 # Initialize Pygame
 pygame.init()
@@ -126,12 +127,36 @@ def show_game_over_screen():
     font = pygame.font.SysFont(None, 74)
     game_over_text = font.render("Game Over", True, (255, 0, 0))
     restart_text = font.render("Press any key to restart", True, (255, 255, 255))
-
     game_window.blit(game_over_text, (window_width / 2 - game_over_text.get_width() / 2, window_height / 2 - game_over_text.get_height()))
     game_window.blit(restart_text, (window_width / 2 - restart_text.get_width() / 2, window_height / 2 + restart_text.get_height()))
-
     pygame.display.update()
+    time.sleep(3)
     wait_for_player_action()
+
+
+def show_title_screen():
+    title_font = pygame.font.SysFont(None, 96)
+    instruction_font = pygame.font.SysFont(None, 36)
+
+    title_text = title_font.render("Space Shooter", True, (255, 255, 255))
+    instruction_text = instruction_font.render("Press any key to start", True, (255, 255, 255))
+
+    while True:
+        game_window.fill((0, 0, 0))  # Fill the screen with black
+        game_window.blit(title_text, (window_width / 2 - title_text.get_width() / 2, window_height / 3))
+        game_window.blit(instruction_text, (window_width / 2 - instruction_text.get_width() / 2, window_height / 2))
+
+        pygame.display.update()
+
+        # Wait for player action
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if event.type == pygame.KEYDOWN:
+                return  # Exit the function and proceed to the game
+
+
 
 def wait_for_player_action():
     while True:
@@ -219,6 +244,10 @@ def main_game_loop():
                 print(player_health)
                 player_health = max(player_health, 0)  # Ensure health doesn't go below 0
                 enemies.remove(enemy)  # Remove the enemy that collided with the player
+                # Flash the screen red
+                game_window.fill((255, 0, 0))
+                pygame.display.update()
+                pygame.time.delay(25)  # Delay to allow the red flash to be visible
             
             if enemy['rect'].y > window_height or enemy['rect'].right < 0 or enemy['rect'].left > window_width:
                 enemies.remove(enemy)  # Remove the enemy if it goes off the bottom or sides of the screen
@@ -235,13 +264,12 @@ def main_game_loop():
 
         # Draw the player ship
         game_window.blit(player_image, player_rect)
-
-
-        draw_hud()
         # Update the display
         pygame.display.update()
 
 
+# Show the title screen
+show_title_screen()
 # Call the main game loop function
 main_game_loop()
 
