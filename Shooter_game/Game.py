@@ -113,7 +113,7 @@ def draw_hud():
 
     # Draw the health bar
     current_health_bar_width = health_percentage * 200  # Assuming 200 is the full width of the health bar
-    pygame.draw.rect(game_window, health_bar_color, (10, 50, current_health_bar_width, 20))
+    pygame.draw.rect(game_window, health_bar_color, (10, 50, current_health_bar_width, 5))
 
     # Draw the health bar
     pygame.draw.rect(game_window, health_bar_color, (health_bar_x, health_bar_y, current_health_bar_width, health_bar_height))
