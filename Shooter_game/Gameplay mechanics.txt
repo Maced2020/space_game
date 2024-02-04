@@ -1,13 +1,11 @@
 
-Step 7: Create enimy 
+ToDo: create boss 
 
-Step 8: create boss 
+ToDo: make the player shoot
 
-Step 9: make the player shoot
+ToDo: make the enimy take dammage 
 
-Step 10: make the enimy take dammage
-
-Step 11: make asure the boss takesa multiple hits 
+ToDo: make asure the boss takes multiple hits 
 
 
 
@@ -55,14 +53,24 @@ Score system.
 _____________________________________________
 
 Completed tasks:
-Step 1: make game window - Done
+ToDo: make game window - Done
 
-Step 2: add a background image - Done
+ToDo: add a background image - Done
 
-Step 3: create a player charicter - Done
+ToDo: create a player charicter - Done
 
-Step 4: Get the player charicter added to the game - Done
+ToDo: Get the player charicter added to the game - Done
 
-Step 5: make the player movable - Done
+ToDo: make the player movable - Done
 
-Step 6: Create HUD - Done
+ToDo: Create HUD - Done
+
+ToDo: the player takers dammage - Done
+
+ToDo: create a HUD for the player health - Done
+
+ToDo: Create enemy - Done
+
+ToDo: Have the enemies show up on the screen and go from top to the bottom - Done
+
+ToDo: create game over screen - Done
