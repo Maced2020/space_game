@@ -1,12 +1,15 @@
-Step 1: make game window 
 
-Step 2: add a background image
+Step 7: Create enimy 
 
-Step 3: create a player charicter
+Step 8: create boss 
 
-Step 4: Get the player charicter added to the game
+Step 9: make the player shoot
 
-Step 5: make the player movable
+Step 10: make the enimy take dammage
+
+Step 11: make asure the boss takesa multiple hits 
+
+
 
 
 
@@ -45,3 +48,21 @@ Score system.
 
 - Lives or health bar.
 - High score table.
+
+
+
+
+_____________________________________________
+
+Completed tasks:
+Step 1: make game window - Done
+
+Step 2: add a background image - Done
+
+Step 3: create a player charicter - Done
+
+Step 4: Get the player charicter added to the game - Done
+
+Step 5: make the player movable - Done
+
+Step 6: Create HUD - Done
