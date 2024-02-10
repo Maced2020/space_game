@@ -21,7 +21,9 @@ background_image = pygame.transform.scale(background_image, (window_width, windo
 
 # Load the bullet image
 bullet_image = pygame.image.load('E:\Tim\code\Shooter_game\enemies\Bullet.jpg').convert_alpha()
+enemy_bullet = pygame.image.load('E:\Tim\code\Shooter_game\enemies\Enemy_bullet.jpg').convert_alpha()
 bullet_speed = -10  # Negative value for moving up. Adjust the speed as needed.
+print(enemy_bullet)
 
 # List to keep track of bullets
 bullets = []
@@ -96,7 +98,7 @@ def shoot():
     bullets.append({'rect': bullet_rect, 'speed': bullet_speed})
 
 def enemy_shoot(enemy_rect):
-    bullet_rect = bullet_image.get_rect(center=(enemy_rect.centerx, enemy_rect.bottom))
+    bullet_rect = enemy_bullet.get_rect(center=(enemy_rect.centerx, enemy_rect.bottom))
     enemy_bullets.append({'rect': bullet_rect, 'speed': 10})  # Positive speed for moving down
 
 
@@ -265,7 +267,8 @@ def main_game_loop():
                 player_health -= 10
                 enemy_bullets.remove(bullet)
             else:
-                game_window.blit(bullet_image, bullet['rect'])
+                game_window.blit(enemy_bullet, bullet['rect'])
+
 
 
 
@@ -276,9 +279,10 @@ def main_game_loop():
             last_enemy_shoot_time = current_time
         
         # Drawing code: clear screen, draw bullets, enemies, player, HUD
-        game_window.blit(background_image, (0, 0))
+        # game_window.blit(background_image, (0, 0))
         for bullet in bullets:
             game_window.blit(bullet_image, bullet['rect'])
+
 
 
         # Update player position based on movement flags
