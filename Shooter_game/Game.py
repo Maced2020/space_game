@@ -18,6 +18,17 @@ pygame.display.set_caption("Space Shooter")
 background_image = pygame.image.load('E:\Tim\code\Shooter_game\space.jpeg')
 background_image = pygame.transform.scale(background_image, (window_width, window_height))
 
+
+# Load the bullet image
+bullet_image = pygame.image.load('E:\Tim\code\Shooter_game\enemies\Bullet.jpg').convert_alpha()
+bullet_speed = -10  # Negative value for moving up. Adjust the speed as needed.
+
+# List to keep track of bullets
+bullets = []
+enemy_bullets = []
+
+
+
 # Define colors
 WHITE = (255, 255, 255)
 
@@ -79,6 +90,17 @@ def create_enemy():
     return {'image': image, 'rect': rect, 'speed_y': speed_y, 'speed_x': speed_x}
 
 
+#shooting the bullet
+def shoot():
+    bullet_rect = bullet_image.get_rect(center=(player_rect.centerx, player_rect.top))
+    bullets.append({'rect': bullet_rect, 'speed': bullet_speed})
+
+def enemy_shoot(enemy_rect):
+    bullet_rect = bullet_image.get_rect(center=(enemy_rect.centerx, enemy_rect.bottom))
+    enemy_bullets.append({'rect': bullet_rect, 'speed': 10})  # Positive speed for moving down
+
+
+
 # Function to add enemies to the game
 def add_enemy(interval, last_time):
     current_time = pygame.time.get_ticks()
@@ -98,7 +120,6 @@ def draw_hud():
     game_window.blit(level_text, (window_width - level_text.get_width() - 10, 10))
 
     # Health bar parameters
-    health_bar_width = 200  # Maximum width of the health bar
     health_bar_height = 5
     health_bar_x = 10
     health_bar_y = 50  # Position the health bar a little below the score
@@ -176,15 +197,16 @@ def wait_for_player_action():
 
 
 def main_game_loop():
-    global game_window, background_image, move_left, move_right, move_up, move_down, window_width, window_height, player_health
+    global game_window, background_image, move_left, move_right, move_up, move_down, window_width, window_height, player_health, score
     last_enemy_spawn_time = 0  # Initialize last_enemy_spawn_time before the loop
     enemy_spawn_interval = 1000  # Time in milliseconds
+    enemy_shoot_interval = 2000  # Milliseconds
+    last_enemy_shoot_time = pygame.time.get_ticks()
     running = True
     while running:
         clock.tick(60)  # Control the frame rate to be 60 FPS
                 # Draw the background image
         game_window.blit(background_image, (0, 0))
-
         # Event handling and player movement updates
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -214,6 +236,50 @@ def main_game_loop():
                     move_up = False
                 if event.key == pygame.K_DOWN:
                     move_down = False
+            if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        shoot()
+
+
+
+        # Update bullet positions and check for collisions
+        for bullet in bullets[:]:  # Iterate over a copy of the bullets list
+            bullet['rect'].y += bullet['speed']
+            if bullet['rect'].bottom < 0:
+                bullets.remove(bullet)
+            else:
+                bullet_hit = False  # Flag to track if the bullet hit an enemy
+                for enemy in enemies[:]:  # Also iterate over a copy of the enemies list
+                    if bullet['rect'].colliderect(enemy['rect']):
+                        enemies.remove(enemy)
+                        bullet_hit = True
+                        score += random.randint(5, 15)  # Increase score by a random amount
+                        break  # Exit the inner loop since the bullet hit an enemy
+                if bullet_hit:
+                    bullets.remove(bullet)  # Remove the bullet here, outside the inner loop
+        for bullet in enemy_bullets[:]:  # Iterate over a copy of the list
+            bullet['rect'].y += bullet['speed']
+            if bullet['rect'].top > window_height:
+                enemy_bullets.remove(bullet)
+            elif player_rect.colliderect(bullet['rect']):
+                player_health -= 10
+                enemy_bullets.remove(bullet)
+            else:
+                game_window.blit(bullet_image, bullet['rect'])
+
+
+
+        current_time = pygame.time.get_ticks()
+        if current_time - last_enemy_shoot_time > enemy_shoot_interval:
+            for enemy in enemies:
+                enemy_shoot(enemy['rect'])
+            last_enemy_shoot_time = current_time
+        
+        # Drawing code: clear screen, draw bullets, enemies, player, HUD
+        game_window.blit(background_image, (0, 0))
+        for bullet in bullets:
+            game_window.blit(bullet_image, bullet['rect'])
+
 
         # Update player position based on movement flags
         if move_left and player_rect.left > 0:
