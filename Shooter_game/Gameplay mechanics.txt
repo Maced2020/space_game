@@ -1,15 +1,16 @@
 
 ToDo: create boss 
 
-ToDo: make the player shoot
-
-ToDo: make the enimy take dammage 
-
 ToDo: make asure the boss takes multiple hits 
 
 ToDo: need power ups so the player have have a better shooetr
 
 ToDo: life restoring items the player can collect and regain health
+
+ToDo: make the level increase depending on the score
+
+ToDo: if the Score hits X number then clear all enemies and bring in the boss 
+    (The boss should take multiple hits and remain at the top of the screan)
 
 
 
@@ -79,3 +80,9 @@ ToDo: Have the enemies show up on the screen and go from top to the bottom - Don
 ToDo: create game over screen - Done
 
 ToDo: create start up screen - Done
+
+ToDo: make the player shoot - Done
+
+ToDo: make the enimy take dammage - Done
+
+ToDo: make the score go up depending on the player kiling the enemy - Done

@@ -279,7 +279,6 @@ def main_game_loop():
             last_enemy_shoot_time = current_time
         
         # Drawing code: clear screen, draw bullets, enemies, player, HUD
-        # game_window.blit(background_image, (0, 0))
         for bullet in bullets:
             game_window.blit(bullet_image, bullet['rect'])
 
