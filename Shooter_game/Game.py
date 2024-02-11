@@ -14,7 +14,7 @@ game_window = pygame.display.set_mode((window_width, window_height), pygame.RESI
 pygame.display.set_caption("Space Shooter")
 
 # Load the background image
-background_image = pygame.image.load('E:\Tim\code\Shooter_game\space.jpeg')
+background_image = pygame.image.load('File path goes here')
 background_image = pygame.transform.scale(background_image, (window_width, window_height))
 
 # Define colors
@@ -32,7 +32,7 @@ player_health = 100
 
 
 # Load the player ship image
-player_image = pygame.image.load('E:\Tim\code\Shooter_game\enemies\Player_ship.jpg').convert_alpha()
+player_image = pygame.image.load('File path goes here').convert_alpha()
 player_rect = player_image.get_rect(center=(window_width // 2, window_height - 50))
 
 # Player movement variables
@@ -44,7 +44,7 @@ clock = pygame.time.Clock()
 
 # Load enemy images into a list
 enemy_images = []
-enemy_folder_path = 'E:\\Tim\\code\\Shooter_game\\enemies'  # Note the double backslashes for Windows paths
+enemy_folder_path = 'File path goes here'  # Note the double backslashes for Windows paths
 print(f"Loading enemy images from: {enemy_folder_path}")
 
 enemy_images = []  # Make sure this is initialized before the loop
