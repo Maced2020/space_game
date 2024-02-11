@@ -15,12 +15,12 @@ game_window = pygame.display.set_mode((window_width, window_height), pygame.RESI
 pygame.display.set_caption("Space Shooter")
 
 # Load the background image
-background_image = pygame.image.load('E:\Tim\code\Shooter_game\space.jpeg')
+background_image = pygame.image.load('E:\Tim\code\Shooter_game\player\space.jpeg')
 background_image = pygame.transform.scale(background_image, (window_width, window_height))
 
 
 # Load the bullet image
-bullet_image = pygame.image.load('E:\Tim\code\Shooter_game\enemies\Bullet.jpg').convert_alpha()
+bullet_image = pygame.image.load('E:\Tim\code\Shooter_game\player\Bullet.jpg').convert_alpha()
 enemy_bullet = pygame.image.load('E:\Tim\code\Shooter_game\enemies\Enemy_bullet.jpg').convert_alpha()
 bullet_speed = -10  # Negative value for moving up. Adjust the speed as needed.
 print(enemy_bullet)
@@ -46,7 +46,7 @@ player_health = 100
 
 
 # Load the player ship image
-player_image = pygame.image.load('E:\Tim\code\Shooter_game\enemies\Player_ship.jpg').convert_alpha()
+player_image = pygame.image.load('E:\Tim\code\Shooter_game\player\Player_ship.jpg').convert_alpha()
 player_rect = player_image.get_rect(center=(window_width // 2, window_height - 50))
 
 # Player movement variables
