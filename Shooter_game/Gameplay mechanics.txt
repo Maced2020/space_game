@@ -1,11 +1,16 @@
 
 ToDo: create boss 
 
-ToDo: make the player shoot
+ToDo: make sure the boss takes multiple hits
 
-ToDo: make the enimy take dammage 
+ToDo: make the level go up after X amount of points.
 
-ToDo: make asure the boss takes multiple hits 
+ToDo: make the cherry increase the life when collected
+
+ToDo: make all the enemies clear out after you get to level X (This will then spawn the boss.
+
+ToDo: make the game end when you beat the boss.
+
 
 
 
@@ -74,3 +79,7 @@ ToDo: Create enemy - Done
 ToDo: Have the enemies show up on the screen and go from top to the bottom - Done
 
 ToDo: create game over screen - Done
+
+ToDo: make the player shoot - Done
+
+ToDo: make the enimy take dammage - Done
