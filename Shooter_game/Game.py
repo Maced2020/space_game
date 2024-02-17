@@ -25,6 +25,11 @@ enemy_bullet = pygame.image.load('E:\Tim\code\Shooter_game\enemies\Enemy_bullet.
 bullet_speed = -10  # Negative value for moving up. Adjust the speed as needed.
 print(enemy_bullet)
 
+cherry_image = pygame.image.load("E:\Tim\code\Shooter_game\player\Cherry.jpg").convert_alpha()
+
+cherries = []
+
+
 # List to keep track of bullets
 bullets = []
 enemy_bullets = []
@@ -84,12 +89,24 @@ enemies = []
 
 # Function to create a new enemy with a random image and position
 def create_enemy():
+    base_speed_y = 2  # Base vertical speed
+    speed_increase_per_level = 0.5  # Increase speed by 0.5 for each level
+    speed_y = base_speed_y + (level - 1) * speed_increase_per_level
+    
+    # Horizontal speed adjustment remains the same or can also be level-dependent
+    speed_x = random.choice([-3, -2, -1, 1, 2, 3])
+    
     image = random.choice(enemy_images)
-    # Enemy starts at a random x position, just above the screen
     rect = image.get_rect(center=(random.randint(0, window_width), -50))
-    speed_y = random.randint(2, 5)  # Vertical speed
-    speed_x = random.choice([-3, -2, -1, 1, 2, 3])  # Horizontal speed, can be negative or positive
+    
     return {'image': image, 'rect': rect, 'speed_y': speed_y, 'speed_x': speed_x}
+
+
+
+#spawning cherry
+def spawn_cherry():
+    rect = cherry_image.get_rect(center=(random.randint(0, window_width), -50))
+    cherries.append({'rect': rect, 'speed': 2})  # Adjust speed as needed
 
 
 #shooting the bullet
@@ -194,16 +211,37 @@ def wait_for_player_action():
                 else:
                     return  # Any other key restarts the game
 
+def show_level_up_screen(level):
+    game_window.fill((0, 0, 0))  # Fill the screen with black or another background color
+    font = pygame.font.SysFont(None, 74)  # Adjust the font size as needed
+    level_up_text = font.render(f"Level {level}!", True, (255, 255, 255))
+    continue_text = font.render("Continue...", True, (255, 255, 255))
+    
+    # Position the text in the center of the screen
+    text_rect = level_up_text.get_rect(center=(window_width / 2, window_height / 2 - 50))
+    continue_text_rect = continue_text.get_rect(center=(window_width / 2, window_height / 2 + 50))
+    
+    game_window.blit(level_up_text, text_rect)
+    game_window.blit(continue_text, continue_text_rect)
+    
+    pygame.display.update()  # Update the display to show the text
+    
+    # Pause the game for a few seconds
+    pygame.time.delay(3000)  # 3000 milliseconds = 3 seconds
+
+
 
 
 
 
 def main_game_loop():
-    global game_window, background_image, move_left, move_right, move_up, move_down, window_width, window_height, player_health, score
+    global game_window, background_image, move_left, move_right, move_up, move_down, window_width, window_height, player_health, score, level, level_text
     last_enemy_spawn_time = 0  # Initialize last_enemy_spawn_time before the loop
     enemy_spawn_interval = 1000  # Time in milliseconds
-    enemy_shoot_interval = 2000  # Milliseconds
+    enemy_shoot_interval = 1500  # Milliseconds
     last_enemy_shoot_time = pygame.time.get_ticks()
+    cherry_spawn_interval = random.randint(10000, 15000)  # milliseconds
+    last_cherry_spawn_time = pygame.time.get_ticks()
     running = True
     while running:
         clock.tick(60)  # Control the frame rate to be 60 FPS
@@ -268,6 +306,28 @@ def main_game_loop():
                 enemy_bullets.remove(bullet)
             else:
                 game_window.blit(enemy_bullet, bullet['rect'])
+        for cherry in cherries[:]:  # Iterate over a copy of the list
+            cherry['rect'].y += cherry['speed']
+            if cherry['rect'].top > window_height:
+                cherries.remove(cherry)
+            elif player_rect.colliderect(cherry['rect']):
+                player_health += 10  # Increase health, adjust value as desired
+                player_health = min(player_health, 100)  # Cap health at 100
+                cherries.remove(cherry)
+            else:
+                game_window.blit(cherry_image, cherry['rect'])
+        current_time = pygame.time.get_ticks()
+        if current_time - last_cherry_spawn_time > cherry_spawn_interval:
+            spawn_cherry()
+            last_cherry_spawn_time = current_time
+        
+        # Example of incrementing level based on score
+        if score >= 100 * level:
+            level += 1
+            show_level_up_screen(level)  # Show the level up screen
+            # Additional logic for level-up effects (e.g., increasing difficulty)
+
+
 
 
 
