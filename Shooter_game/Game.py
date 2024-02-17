@@ -33,8 +33,17 @@ cherries = []
 # List to keep track of bullets
 bullets = []
 enemy_bullets = []
+#miniboss picture 
+mini_boss_image = pygame.image.load("E:\Tim\code\Shooter_game\player\Mini_boss.png").convert_alpha()
 
-
+# Mini Boss attributes
+mini_boss = {
+    "image": mini_boss_image,
+    "rect": mini_boss_image.get_rect(center=(window_width // 2, 100)),  # Starting position
+    "health": 100,  # Example health value
+    "speed": 2,  # Example speed, adjust based on your game's design
+    "alive": False  # Track if the boss is currently in the game
+}
 
 # Define colors
 WHITE = (255, 255, 255)
@@ -122,11 +131,13 @@ def enemy_shoot(enemy_rect):
 
 # Function to add enemies to the game
 def add_enemy(interval, last_time):
-    current_time = pygame.time.get_ticks()
-    if current_time - last_time > interval:
-        enemies.append(create_enemy())
-        return current_time  # Update last spawn time
-    return last_time  # Keep the last spawn time if no enemy is added
+    if not mini_boss['alive']:  # Only spawn enemies if the mini boss is not alive
+        current_time = pygame.time.get_ticks()
+        if current_time - last_time > interval:
+            enemies.append(create_enemy())
+            return current_time
+    return last_time
+
 
 # Function to draw the HUD
 def draw_hud():
@@ -326,6 +337,29 @@ def main_game_loop():
             level += 1
             show_level_up_screen(level)  # Show the level up screen
             # Additional logic for level-up effects (e.g., increasing difficulty)
+        if level == 2 and not mini_boss["alive"]:
+            enemies.clear()  # Clear existing enemies
+            mini_boss["alive"] = True  # Mark the mini boss as active
+            # Optionally, display a message or play a sound to signal the boss's arrival
+        if mini_boss["alive"]:
+    # Update mini boss position
+            # Example: Simple left and right movement
+            mini_boss["rect"].x += mini_boss["speed"]
+            if mini_boss["rect"].left <= 0 or mini_boss["rect"].right >= window_width:
+                mini_boss["speed"] = -mini_boss["speed"]
+            
+            # Check collision with player bullets
+            for bullet in bullets[:]:
+                if mini_boss["rect"].colliderect(bullet["rect"]):
+                    mini_boss["health"] -= 10  # Example damage
+                    bullets.remove(bullet)
+                    if mini_boss["health"] <= 0:
+                        mini_boss["alive"] = False
+                        level += 1  # Or trigger any specific event after defeating the boss
+            
+            # Draw the mini boss
+            game_window.blit(mini_boss["image"], mini_boss["rect"])
+
 
 
 
