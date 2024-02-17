@@ -1,13 +1,13 @@
 
-ToDo: create boss 
+ToDo: Make the mini boss shoot back
 
-ToDo: make sure the boss takes multiple hits
+ToDo:Make a real boss for the end of the game.
 
-ToDo: make the level go up after X amount of points.
+ToDo: have the mini boss come back every 5 levels to extend game play
 
-ToDo: make the cherry increase the life when collected
+ToDo: draw multiple mini bosses
 
-ToDo: make all the enemies clear out after you get to level X (This will then spawn the boss.
+ToDo: create a power up for the player to have a better gun. 
 
 ToDo: make the game end when you beat the boss.
 
@@ -62,6 +62,12 @@ ToDo: make game window - Done
 
 ToDo: add a background image - Done
 
+ToDo: create mini boss - Done
+
+ToDo: make the level go up after X amount of points. - Done
+
+ToDo: make sure the boss takes multiple hits - Done
+
 ToDo: create a player charicter - Done
 
 ToDo: Get the player charicter added to the game - Done
@@ -69,6 +75,12 @@ ToDo: Get the player charicter added to the game - Done
 ToDo: make the player movable - Done
 
 ToDo: Create HUD - Done
+
+
+ToDo: make the cherry increase the life when collected - Done
+
+ToDo: make all the enemies clear out after you get to level X (This will then spawn the boss. - Done
+
 
 ToDo: the player takers dammage - Done
 
