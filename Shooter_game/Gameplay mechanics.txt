@@ -16,6 +16,9 @@ ToDo: make the game end when you beat the boss.
 
 
 
+
+
+
 _____________________________________________
 
 
@@ -60,6 +63,8 @@ _____________________________________________
 Completed tasks:
 ToDo: make game window - Done
 
+ToDo: Fix how the game handles a game over. - Done
+
 ToDo: add a background image - Done
 
 ToDo: create mini boss - Done
@@ -80,6 +85,9 @@ ToDo: Create HUD - Done
 ToDo: make the cherry increase the life when collected - Done
 
 ToDo: make all the enemies clear out after you get to level X (This will then spawn the boss. - Done
+
+
+ToDo: give the mini boss a health bar - Done
 
 
 ToDo: the player takers dammage - Done

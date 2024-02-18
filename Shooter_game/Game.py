@@ -40,10 +40,15 @@ mini_boss_image = pygame.image.load("E:\Tim\code\Shooter_game\player\Mini_boss.p
 mini_boss = {
     "image": mini_boss_image,
     "rect": mini_boss_image.get_rect(center=(window_width // 2, 100)),  # Starting position
-    "health": 100,  # Example health value
+    "health": 500,  # Example health value
     "speed": 2,  # Example speed, adjust based on your game's design
     "alive": False  # Track if the boss is currently in the game
 }
+# Mini Boss Health Bar attributes
+mini_boss_health_bar_width = 200  # Adjust as needed
+mini_boss_health_bar_height = 10  # Adjust as needed
+mini_boss_health_bar_x = window_width // 2 - mini_boss_health_bar_width // 2
+mini_boss_health_bar_y = 20  # Position above the mini boss or wherever fits best
 
 # Define colors
 WHITE = (255, 255, 255)
@@ -94,6 +99,18 @@ print(f"Loaded {len(enemy_images)} enemy images.")
 
 # List to keep track of enemy instances
 enemies = []
+
+def draw_mini_boss_health_bar():
+    # Draw background bar (full health)
+    pygame.draw.rect(game_window, (255,0,0), (mini_boss_health_bar_x, mini_boss_health_bar_y, mini_boss_health_bar_width, mini_boss_health_bar_height))
+
+    # Calculate current health bar width based on mini boss's health
+    current_health_bar_width = (mini_boss["health"] / 500) * mini_boss_health_bar_width  # Assuming 500 is max health
+
+    # Draw foreground bar (current health)
+    pygame.draw.rect(game_window, (0,255,0), (mini_boss_health_bar_x, mini_boss_health_bar_y, current_health_bar_width, mini_boss_health_bar_height))
+
+
 
 
 # Function to create a new enemy with a random image and position
@@ -153,6 +170,7 @@ def draw_hud():
     health_bar_height = 5
     health_bar_x = 10
     health_bar_y = 50  # Position the health bar a little below the score
+
 
     # Determine health bar color based on current health percentage
     health_percentage = player_health / 100
@@ -373,6 +391,7 @@ def main_game_loop():
             mini_boss["alive"] = True  # Mark the mini boss as active
             # Optionally, display a message or play a sound to signal the boss's arrival
         if mini_boss["alive"]:
+            draw_mini_boss_health_bar()
     # Update mini boss position
             # Example: Simple left and right movement
             mini_boss["rect"].x += mini_boss["speed"]
