@@ -174,15 +174,49 @@ def draw_hud():
 
 # gameover screen
 def show_game_over_screen():
-    game_window.fill((0, 0, 0))  # Optional: Fill the screen with black or another color
+    # Show the game over screen and wait for player action
+    global level, score, player_health, player_rect
+    game_window.fill((0, 0, 0))
     font = pygame.font.SysFont(None, 74)
     game_over_text = font.render("Game Over", True, (255, 0, 0))
     restart_text = font.render("Press any key to restart", True, (255, 255, 255))
     game_window.blit(game_over_text, (window_width / 2 - game_over_text.get_width() / 2, window_height / 2 - game_over_text.get_height()))
     game_window.blit(restart_text, (window_width / 2 - restart_text.get_width() / 2, window_height / 2 + restart_text.get_height()))
+    player_rect = player_image.get_rect(center=(window_width // 2, window_height - 50))
     pygame.display.update()
-    time.sleep(3)
-    wait_for_player_action()
+    pygame.time.delay(1900)  # Short delay to prevent immediate restart
+
+    # Call wait_for_player_action and check if the game should restart
+    should_restart = wait_for_player_action()
+    if should_restart:
+        restart_game()
+        return True  # Indicate that the game should restart
+    else:
+        return False  # Indicate that the game should not restart
+
+
+def restart_game():
+    global score, player_health, enemies, cherries, level, move_left, move_right, move_up, move_down
+    move_left = move_right = move_up = move_down = False
+    
+    score = 0
+    player_health = 100
+    enemies.clear()
+    cherries.clear()
+    level = 1  # Reset level to 1
+
+
+def wait_for_player_action():
+    # This function waits for the player to press any key to restart the game
+    waiting = True
+    while waiting:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if event.type == pygame.KEYDOWN:
+                restart_game()  # Reset game state before restarting
+                return  # Exit this function to proceed to restart the game
 
 
 def show_title_screen():
@@ -210,17 +244,15 @@ def show_title_screen():
 
 
 def wait_for_player_action():
+    # Wait for the player to press any key after a game over
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:  # Example: Quit if the ESC key is pressed
-                    pygame.quit()
-                    exit()
-                else:
-                    return  # Any other key restarts the game
+                # Return a flag indicating the game should restart
+                return True
 
 def show_level_up_screen(level):
     game_window.fill((0, 0, 0))  # Fill the screen with black or another background color
@@ -239,7 +271,6 @@ def show_level_up_screen(level):
     
     # Pause the game for a few seconds
     pygame.time.delay(3000)  # 3000 milliseconds = 3 seconds
-
 
 
 
@@ -436,6 +467,23 @@ def main_game_loop():
 show_title_screen()
 # Call the main game loop function
 main_game_loop()
+
+def main():
+    while True:
+        show_title_screen()  # Show the title screen
+        game_over = main_game_loop()  # Start the main game loop
+
+        if game_over:
+            should_restart = show_game_over_screen()
+            if not should_restart:
+                break  # Exit the loop and end the game if not restarting
+        else:
+            break  # If the game loop ended for reasons other than a game over, exit
+
+if __name__ == "__main__":
+    main()
+
+
 
 # Quit Pygame
 pygame.quit()
