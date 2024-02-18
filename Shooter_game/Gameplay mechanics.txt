@@ -1,5 +1,4 @@
 
-ToDo: Make the mini boss shoot back
 
 ToDo:Make a real boss for the end of the game.
 
@@ -64,6 +63,8 @@ Completed tasks:
 ToDo: make game window - Done
 
 ToDo: Fix how the game handles a game over. - Done
+
+ToDo: Make the mini boss shoot back - Done
 
 ToDo: add a background image - Done
 
