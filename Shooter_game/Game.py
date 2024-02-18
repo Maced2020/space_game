@@ -33,6 +33,8 @@ cherries = []
 # List to keep track of bullets
 bullets = []
 enemy_bullets = []
+mini_boss_bullets = []
+
 #miniboss picture 
 mini_boss_image = pygame.image.load("E:\Tim\code\Shooter_game\player\Mini_boss.png").convert_alpha()
 
@@ -110,8 +112,17 @@ def draw_mini_boss_health_bar():
     # Draw foreground bar (current health)
     pygame.draw.rect(game_window, (0,255,0), (mini_boss_health_bar_x, mini_boss_health_bar_y, current_health_bar_width, mini_boss_health_bar_height))
 
-
-
+def mini_boss_shoot():
+    if mini_boss["alive"]:
+        # Define the starting positions of the bullets relative to the mini boss
+        bullet1_pos = (mini_boss["rect"].centerx - 20, mini_boss["rect"].bottom)
+        bullet2_pos = (mini_boss["rect"].centerx + 20, mini_boss["rect"].bottom)
+        
+        # Create bullets with their positions and speeds
+        random_bullet_speed_one = random.randint(10, 25)
+        random_bullet_speed_two = random.randint(10, 25)
+        mini_boss_bullets.append({"rect": pygame.Rect(bullet1_pos[0], bullet1_pos[1], 10, 20), "speed": random_bullet_speed_one})
+        mini_boss_bullets.append({"rect": pygame.Rect(bullet2_pos[0], bullet2_pos[1], 10, 20), "speed": random_bullet_speed_two})
 
 # Function to create a new enemy with a random image and position
 def create_enemy():
@@ -299,6 +310,8 @@ def main_game_loop():
     last_enemy_spawn_time = 0  # Initialize last_enemy_spawn_time before the loop
     enemy_spawn_interval = 1000  # Time in milliseconds
     enemy_shoot_interval = 1500  # Milliseconds
+    mini_boss_shoot_interval = 1200  # Milliseconds between shots
+    last_mini_boss_shoot_time = pygame.time.get_ticks()  # Initialize the timer
     last_enemy_shoot_time = pygame.time.get_ticks()
     cherry_spawn_interval = random.randint(10000, 15000)  # milliseconds
     last_cherry_spawn_time = pygame.time.get_ticks()
@@ -380,6 +393,25 @@ def main_game_loop():
         if current_time - last_cherry_spawn_time > cherry_spawn_interval:
             spawn_cherry()
             last_cherry_spawn_time = current_time
+        if mini_boss["alive"] and current_time - last_mini_boss_shoot_time > mini_boss_shoot_interval:
+            mini_boss_shoot()
+            last_mini_boss_shoot_time = current_time
+        for bullet in mini_boss_bullets[:]:  # Use a copy of the list for safe removal
+            # Update bullet position
+            bullet["rect"].y += bullet["speed"]
+            
+            # Check for collision with player
+            if player_rect.colliderect(bullet["rect"]):
+                player_health -= 15  # Example damage to player
+                mini_boss_bullets.remove(bullet)  # Remove the bullet
+            
+            # Remove bullet if it goes off-screen
+            elif bullet["rect"].top > window_height:
+                mini_boss_bullets.remove(bullet)
+            
+            # Draw the bullet
+            else:
+                pygame.draw.rect(game_window, (255, 0, 0), bullet["rect"])  # Example bullet color
         
         # Example of incrementing level based on score
         if score >= 100 * level:
