@@ -36,7 +36,7 @@ enemy_bullets = []
 mini_boss_bullets = []
 
 #miniboss picture 
-mini_boss_image = pygame.image.load("E:\Tim\code\Shooter_game\player\Mini_boss.png").convert_alpha()
+mini_boss_image = pygame.image.load("E:\Tim\code\Shooter_game\enemies\mini_bosses\Mini_boss.png").convert_alpha()
 
 # Mini Boss attributes
 mini_boss = {
@@ -46,6 +46,7 @@ mini_boss = {
     "speed": 2,  # Example speed, adjust based on your game's design
     "alive": False  # Track if the boss is currently in the game
 }
+
 # Mini Boss Health Bar attributes
 mini_boss_health_bar_width = 200  # Adjust as needed
 mini_boss_health_bar_height = 10  # Adjust as needed
@@ -97,7 +98,6 @@ for filename in os.listdir(enemy_folder_path):
         print(f"Skipping: {filename} (not a .png file)")
 
 print(f"Loaded {len(enemy_images)} enemy images.")
-
 
 # List to keep track of enemy instances
 enemies = []
@@ -286,7 +286,19 @@ def wait_for_player_action():
 def show_level_up_screen(level):
     game_window.fill((0, 0, 0))  # Fill the screen with black or another background color
     font = pygame.font.SysFont(None, 74)  # Adjust the font size as needed
-    level_up_text = font.render(f"Level {level}!", True, (255, 255, 255))
+    font.render(f"Level {level}!", True, (255, 255, 255))
+    font.render("Continue...", True, (255, 255, 255))
+
+def show_mini_boss_defeat_screen():
+    game_window.fill((0, 0, 0))  # Fill the screen with black or another background color
+    font = pygame.font.SysFont(None, 74)  # Adjust the font size as needed
+    font.render(f"Mini Boss Defeated!", True, (255, 255, 255))
+    font.render("Continue...", True, (255, 255, 255))
+
+def show_mini_boss_start_screen():
+    game_window.fill((0, 0, 0))  # Fill the screen with black or another background color
+    font = pygame.font.SysFont(None, 74)  # Adjust the font size as needed
+    level_up_text = font.render(f"Mini Boss activated!", True, (255, 255, 255))
     continue_text = font.render("Continue...", True, (255, 255, 255))
     
     # Position the text in the center of the screen
@@ -418,9 +430,10 @@ def main_game_loop():
             level += 1
             show_level_up_screen(level)  # Show the level up screen
             # Additional logic for level-up effects (e.g., increasing difficulty)
-        if level == 2 and not mini_boss["alive"]:
+        if level == 3 and not mini_boss["alive"]: #this is when the mini boss shows up.
             enemies.clear()  # Clear existing enemies
             mini_boss["alive"] = True  # Mark the mini boss as active
+            show_mini_boss_start_screen()
             # Optionally, display a message or play a sound to signal the boss's arrival
         if mini_boss["alive"]:
             draw_mini_boss_health_bar()
@@ -437,7 +450,9 @@ def main_game_loop():
                     bullets.remove(bullet)
                     if mini_boss["health"] <= 0:
                         mini_boss["alive"] = False
-                        level += 1  # Or trigger any specific event after defeating the boss
+                        show_mini_boss_defeat_screen()
+                        level += 1
+                        score = 375
             
             # Draw the mini boss
             game_window.blit(mini_boss["image"], mini_boss["rect"])
