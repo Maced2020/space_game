@@ -2,11 +2,14 @@
 
 ToDo:Make a real boss for the end of the game.
 
-ToDo: have the mini boss come back every 5 levels to extend game play
-
 ToDo: create a power up for the player to have a better gun. 
 
 ToDo: make the game end when you beat the boss.
+
+ToDo: change the game to not have it start from the beguining but have it start from the 
+prevous level, to do this you need to make sure that the score and the level get reset 
+as appropreate. right now everything gets reset to 0
+
 
 
 
@@ -67,6 +70,8 @@ ToDo: Make the mini boss shoot back - Done
 ToDo: add a background image - Done
 
 ToDo: create mini boss - Done
+
+ToDo: have the mini boss come back every 5 levels to extend game play - Copmplete 
 
 ToDo: draw multiple mini bosses - Complete
 
