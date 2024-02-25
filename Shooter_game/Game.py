@@ -241,7 +241,9 @@ def restart_game():
     player_health = 100
     enemies.clear()
     cherries.clear()
+    
     level = 1  # Reset level to 1
+    mini_boss["alive"] = False  # Reset mini boss to not being alive
 
 
 def wait_for_player_action():
@@ -335,8 +337,8 @@ def show_mini_boss_start_screen():
 def main_game_loop():
     global game_window, background_image, move_left, move_right, move_up, move_down, window_width, window_height, player_health, score, level, level_text, mini_boss_list, mini_boss_image
     last_enemy_spawn_time = 0  # Initialize last_enemy_spawn_time before the loop
-    enemy_spawn_interval = 1000  # Time in milliseconds
-    enemy_shoot_interval = 1500  # Milliseconds
+    enemy_spawn_interval = 750  # Time in milliseconds
+    enemy_shoot_interval = 1200  # Milliseconds
     mini_boss_shoot_interval = 1200  # Milliseconds between shots
     last_mini_boss_shoot_time = pygame.time.get_ticks()  # Initialize the timer
     last_enemy_shoot_time = pygame.time.get_ticks()
@@ -404,6 +406,10 @@ def main_game_loop():
             elif player_rect.colliderect(bullet['rect']):
                 player_health -= 10
                 enemy_bullets.remove(bullet)
+                game_window.fill((255, 0, 0))
+                pygame.display.update()
+                pygame.time.delay(25) 
+
             else:
                 game_window.blit(enemy_bullet, bullet['rect'])
         for cherry in cherries[:]:  # Iterate over a copy of the list
@@ -414,6 +420,10 @@ def main_game_loop():
                 player_health += 10  # Increase health, adjust value as desired
                 player_health = min(player_health, 100)  # Cap health at 100
                 cherries.remove(cherry)
+                game_window.fill((0, 255, 0))
+                pygame.display.update()
+                pygame.time.delay(25) 
+
             else:
                 game_window.blit(cherry_image, cherry['rect'])
         current_time = pygame.time.get_ticks()
@@ -423,6 +433,13 @@ def main_game_loop():
         if mini_boss["alive"] and current_time - last_mini_boss_shoot_time > mini_boss_shoot_interval:
             mini_boss_shoot()
             last_mini_boss_shoot_time = current_time
+        if mini_boss["alive"] and player_rect.colliderect(mini_boss["rect"]):
+            player_health -= 15
+                # Flash the screen red to indicate damage
+            game_window.fill((255, 0, 0))
+            pygame.display.update()
+            pygame.time.delay(25)  # 25 milliseconds delay for the red flash visibility
+            print (player_health)
         for bullet in mini_boss_bullets[:]:  # Use a copy of the list for safe removal
             # Update bullet position
             bullet["rect"].y += bullet["speed"]
@@ -431,6 +448,9 @@ def main_game_loop():
             if player_rect.colliderect(bullet["rect"]):
                 player_health -= 15  # Example damage to player
                 mini_boss_bullets.remove(bullet)  # Remove the bullet
+                game_window.fill((255, 0, 0))
+                pygame.display.update()
+                pygame.time.delay(25)  # Delay to allow the red flash to be visible
             
             # Remove bullet if it goes off-screen
             elif bullet["rect"].top > window_height:
@@ -444,7 +464,7 @@ def main_game_loop():
         if score >= 100 * level:
             level += 1
             # Additional logic for level-up effects (e.g., increasing difficulty)
-        if level % 2 == 0 and level < 9 and not mini_boss["alive"]:
+        if level % 3 == 0 and level < 13 and not mini_boss["alive"]:
              #this is when the mini boss shows up.
             enemies.clear()  # Clear existing enemies
             bullets.clear()
@@ -465,7 +485,7 @@ def main_game_loop():
             # Check collision with player bullets
             for bullet in bullets[:]:
                 if mini_boss["rect"].colliderect(bullet["rect"]):
-                    mini_boss["health"] -= 10  # Example damage
+                    mini_boss["health"] -= 15  # mini boss damage
                     bullets.remove(bullet)
                     if mini_boss["health"] <= 0:
                         mini_boss["alive"] = False

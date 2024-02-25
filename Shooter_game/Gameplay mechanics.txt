@@ -4,8 +4,6 @@ ToDo:Make a real boss for the end of the game.
 
 ToDo: have the mini boss come back every 5 levels to extend game play
 
-ToDo: draw multiple mini bosses
-
 ToDo: create a power up for the player to have a better gun. 
 
 ToDo: make the game end when you beat the boss.
@@ -69,6 +67,8 @@ ToDo: Make the mini boss shoot back - Done
 ToDo: add a background image - Done
 
 ToDo: create mini boss - Done
+
+ToDo: draw multiple mini bosses - Complete
 
 ToDo: make the level go up after X amount of points. - Done
 
