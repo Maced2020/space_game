@@ -1,10 +1,12 @@
 
 
-ToDo:Make a real boss for the end of the game.
+ToDo: create a power up for the player to have a better gun.
 
-ToDo: create a power up for the player to have a better gun. 
+ToDo: add the boss to the game.
 
-ToDo: make the game end when you beat the boss.
+ToDo: Figure out if i want to add sound. 
+
+
 
 ToDo: change the game to not have it start from the beguining but have it start from the 
 prevous level, to do this you need to make sure that the score and the level get reset 
@@ -63,6 +65,8 @@ _____________________________________________
 Completed tasks:
 ToDo: make game window - Done
 
+ToDo: make the game end when you beat the boss. - Complete
+
 ToDo: Fix how the game handles a game over. - Done
 
 ToDo: Make the mini boss shoot back - Done
@@ -70,6 +74,8 @@ ToDo: Make the mini boss shoot back - Done
 ToDo: add a background image - Done
 
 ToDo: create mini boss - Done
+
+ToDo:Make a boss for the end of the game. - Complete
 
 ToDo: have the mini boss come back every 5 levels to extend game play - Copmplete 
 
