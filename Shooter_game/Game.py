@@ -36,7 +36,6 @@ enemy_bullets = []
 mini_boss_bullets = []
 
 #miniboss picture 
-# mini_boss_image = 
 
 mini_boss1 = pygame.image.load("E:\Tim\code\Shooter_game\enemies\mini_bosses\Mini_boss.png").convert_alpha()
 mini_boss2 = pygame.image.load("E:\Tim\code\Shooter_game\enemies\mini_bosses\Mini_boss_2.png").convert_alpha()
@@ -45,6 +44,13 @@ mini_boss4 = pygame.image.load("E:\Tim\code\Shooter_game\enemies\mini_bosses\Min
 
 mini_boss_list = (mini_boss1, mini_boss2, mini_boss3, mini_boss3, mini_boss4)
 
+# Load the player ship image
+player_image = pygame.image.load("E:\Tim\code\Shooter_game\player\Player_ship.jpg").convert_alpha()
+player_rect = player_image.get_rect(center=(window_width // 2, window_height - 50))
+
+# Player movement variables
+player_speed = 7.5
+move_left = move_right = move_up = move_down = False
 
 mini_boss_image = random.choice(mini_boss_list)
 # Mini Boss attributes
@@ -78,14 +84,6 @@ score = 0
 level = 1
 player_health = 100
 
-
-# Load the player ship image
-player_image = pygame.image.load("E:\Tim\code\Shooter_game\player\Player_ship.jpg").convert_alpha()
-player_rect = player_image.get_rect(center=(window_width // 2, window_height - 50))
-
-# Player movement variables
-player_speed = 7.5
-move_left = move_right = move_up = move_down = False
 
 # Create a clock object to control the frame rate
 clock = pygame.time.Clock()
@@ -359,7 +357,24 @@ def show_mini_boss_start_screen():
     # Pause the game for a few seconds
     pygame.time.delay(3000)  # 3000 milliseconds = 3 seconds
 
-
+def final_boss_activation_screen():
+    global WHITE, BLACK
+    game_window.fill(BLACK)  # Fill the screen with black or another background color
+    font = pygame.font.SysFont(None, 74)  # Adjust the font size as needed
+    level_up_text = font.render(f"FINAL BOSS!", True, WHITE)
+    continue_text = font.render("Continue...", True, WHITE)
+    
+    # Position the text in the center of the screen
+    text_rect = level_up_text.get_rect(center=(window_width / 2, window_height / 2 - 50))
+    continue_text_rect = continue_text.get_rect(center=(window_width / 2, window_height / 2 + 50))
+    
+    game_window.blit(level_up_text, text_rect)
+    game_window.blit(continue_text, continue_text_rect)
+    
+    pygame.display.update()  # Update the display to show the text
+    
+    # Pause the game for a few seconds
+    pygame.time.delay(3000)  # 3000 milliseconds = 3 seconds
 
 
 
@@ -497,13 +512,18 @@ def main_game_loop():
 
         if level > 15:
             show_game_finished_screen()
+
+        if level == 15:
+            enemies.clear()  # Clear existing enemies
+            bullets.clear()
+            show_mini_boss_start_screen()
+
+
             # Additional logic for level-up effects (e.g., increasing difficulty)
         if level % 3 == 0 and level < 13 and not mini_boss["alive"]:
              #this is when the mini boss shows up.
             enemies.clear()  # Clear existing enemies
             bullets.clear()
-            mini_boss_image = random.choice(mini_boss_list)
-            print(mini_boss_image)
             mini_boss_bullets.clear()
             mini_boss["alive"] = True  # Mark the mini boss as active
             show_mini_boss_start_screen()
