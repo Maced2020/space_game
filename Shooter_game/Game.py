@@ -15,17 +15,17 @@ game_window = pygame.display.set_mode((window_width, window_height), pygame.RESI
 pygame.display.set_caption("Space Shooter")
 
 # Load the background image
-background_image = pygame.image.load('E:\Tim\code\Shooter_game\player\space.jpeg')
+background_image = pygame.image.load('Shooter_game/player/space.jpeg')
 background_image = pygame.transform.scale(background_image, (window_width, window_height))
 
 
 # Load the bullet image
-bullet_image = pygame.image.load("E:\Tim\code\Shooter_game\player\Bullet.jpg").convert_alpha()
-enemy_bullet = pygame.image.load('E:\Tim\code\Shooter_game\enemies\Enemy_bullet.jpg').convert_alpha()
+bullet_image = pygame.image.load("Shooter_game/player/Bullet.jpg").convert_alpha()
+enemy_bullet = pygame.image.load('Shooter_game/enemies/Enemy_bullet.jpg').convert_alpha()
 bullet_speed = -10  # Negative value for moving up. Adjust the speed as needed.
 print(enemy_bullet)
 
-cherry_image = pygame.image.load("E:\Tim\code\Shooter_game\player\Cherry.jpg").convert_alpha()
+cherry_image = pygame.image.load("Shooter_game/player/Cherry.jpg").convert_alpha()
 
 cherries = []
 
@@ -37,15 +37,15 @@ mini_boss_bullets = []
 
 #miniboss picture 
 
-mini_boss1 = pygame.image.load("E:\Tim\code\Shooter_game\enemies\mini_bosses\Mini_boss.png").convert_alpha()
-mini_boss2 = pygame.image.load("E:\Tim\code\Shooter_game\enemies\mini_bosses\Mini_boss_2.png").convert_alpha()
-mini_boss3 = pygame.image.load("E:\Tim\code\Shooter_game\enemies\mini_bosses\Mini_boss_3.png").convert_alpha()
-mini_boss4 = pygame.image.load("E:\Tim\code\Shooter_game\enemies\mini_bosses\Mini_boss_4.png").convert_alpha()
+mini_boss1 = pygame.image.load("Shooter_game/enemies/mini_bosses/Mini_boss.png").convert_alpha()
+mini_boss2 = pygame.image.load("Shooter_game/enemies/mini_bosses/Mini_boss_2.png").convert_alpha()
+mini_boss3 = pygame.image.load("Shooter_game/enemies/mini_bosses/Mini_boss_3.png").convert_alpha()
+mini_boss4 = pygame.image.load("Shooter_game/enemies/mini_bosses/Mini_boss_4.png").convert_alpha()
 
 mini_boss_list = (mini_boss1, mini_boss2, mini_boss3, mini_boss3, mini_boss4)
 
 # Load the player ship image
-player_image = pygame.image.load("E:\Tim\code\Shooter_game\player\Player_ship.jpg").convert_alpha()
+player_image = pygame.image.load("Shooter_game/player/Player_ship.jpg").convert_alpha()
 player_rect = player_image.get_rect(center=(window_width // 2, window_height - 50))
 
 # Player movement variables
@@ -90,7 +90,7 @@ clock = pygame.time.Clock()
 
 # Load enemy images into a list
 enemy_images = []
-enemy_folder_path = 'E:\\Tim\\code\\Shooter_game\\enemies'  # Note the double backslashes for Windows paths
+enemy_folder_path = 'Shooter_game/enemies'  # Note the double backslashes for Windows paths
 print(f"Loading enemy images from: {enemy_folder_path}")
 
 enemy_images = []  # Make sure this is initialized before the loop
