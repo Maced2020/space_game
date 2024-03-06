@@ -34,6 +34,7 @@ cherries = []
 bullets = []
 enemy_bullets = []
 mini_boss_bullets = []
+final_boss_bullets = []
 
 #miniboss picture 
 
@@ -68,6 +69,25 @@ mini_boss_health_bar_height = 10  # Adjust as needed
 mini_boss_health_bar_x = window_width // 2 - mini_boss_health_bar_width // 2
 mini_boss_health_bar_y = 20  # Position above the mini boss or wherever fits best
 
+
+
+# Final Boss
+final_boss_image = pygame.image.load("Shooter_game/enemies/final_boss/final_boss.png").convert_alpha()
+
+
+final_boss = {
+    "image": final_boss_image,
+    "rect": final_boss_image.get_rect(center=(window_width // 2, 100)),  # Starting position
+    "health": 1000,  # Example health value
+    "speed": 3,  # Example speed, adjust based on your game's design
+    "alive": False  # Track if the boss is currently in the game
+}
+
+# Mini Boss Health Bar attributes
+Final_boss_health_bar_width = 200  # Adjust as needed
+Final_boss_health_bar_height = 10  # Adjust as needed
+Finl_boss_health_bar_x = window_width // 2 - mini_boss_health_bar_width // 2
+Final_boss_health_bar_y = 20  # Position above the mini boss or wherever fits best
 # Define colors
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
@@ -112,6 +132,20 @@ print(f"Loaded {len(enemy_images)} enemy images.")
 # List to keep track of enemy instances
 enemies = []
 
+def draw_final_boss_health_bar():
+    global RED, GREEN
+    # Draw background bar (full health)
+    pygame.draw.rect(game_window, RED, (Finl_boss_health_bar_x, Final_boss_health_bar_y, Final_boss_health_bar_width, Final_boss_health_bar_height))
+
+    # Calculate current health bar width based on mini boss's health
+    current_health_bar_width = (final_boss["health"] / 1000) * Final_boss_health_bar_width  # Assuming 1000 is max health
+
+    # Draw foreground bar (current health)
+    pygame.draw.rect(game_window, GREEN, (Finl_boss_health_bar_x, Final_boss_health_bar_y, Final_boss_health_bar_width, Final_boss_health_bar_height))
+
+
+
+
 def draw_mini_boss_health_bar():
     global RED, GREEN
     # Draw background bar (full health)
@@ -134,6 +168,20 @@ def mini_boss_shoot():
         random_bullet_speed_two = random.randint(10, 25)
         mini_boss_bullets.append({"rect": pygame.Rect(bullet1_pos[0], bullet1_pos[1], 10, 20), "speed": random_bullet_speed_one})
         mini_boss_bullets.append({"rect": pygame.Rect(bullet2_pos[0], bullet2_pos[1], 10, 20), "speed": random_bullet_speed_two})
+
+def final_boss_shoot():
+    if final_boss["alive"]:
+        # Define the starting positions of the bullets relative to the mini boss
+        bullet1_pos = (final_boss["rect"].centerx - 20, final_boss["rect"].bottom)
+        bullet2_pos = (final_boss["rect"].centerx + 20, final_boss["rect"].bottom)
+        
+        # Create bullets with their positions and speeds
+        random_bullet_speed_one = random.randint(10, 25)
+        random_bullet_speed_two = random.randint(10, 25)
+        final_boss_bullets.append({"rect": pygame.Rect(bullet1_pos[0], bullet1_pos[1], 10, 20), "speed": random_bullet_speed_one})
+        final_boss_bullets.append({"rect": pygame.Rect(bullet2_pos[0], bullet2_pos[1], 10, 20), "speed": random_bullet_speed_two})
+
+
 
 # Function to create a new enemy with a random image and position
 def create_enemy():
@@ -386,6 +434,7 @@ def main_game_loop():
     enemy_spawn_interval = 750  # Time in milliseconds
     enemy_shoot_interval = 1200  # Milliseconds
     mini_boss_shoot_interval = 1200  # Milliseconds between shots
+    final_boss_shoot_interval = 1000
     last_mini_boss_shoot_time = pygame.time.get_ticks()  # Initialize the timer
     last_enemy_shoot_time = pygame.time.get_ticks()
     cherry_spawn_interval = random.randint(10000, 15000)  # milliseconds
@@ -513,10 +562,34 @@ def main_game_loop():
         if level > 15:
             show_game_finished_screen()
 
-        if level == 15:
-            enemies.clear()  # Clear existing enemies
-            bullets.clear()
-            show_mini_boss_start_screen()
+        if level == 15 and not final_boss["alive"]:
+            # Initialize final boss fight
+            enemies.clear()  # Clear other enemies
+            bullets.clear()  # Optionally clear bullets
+            final_boss["alive"] = True
+            final_boss_activation_screen()
+        if final_boss["alive"]:
+            draw_final_boss_health_bar()
+            # Update mini boss position
+            # Example: Simple left and right movement
+            final_boss["rect"].x += final_boss["speed"]
+            if final_boss["rect"].left <= 0 or final_boss["rect"].right >= window_width:
+                final_boss["speed"] = -final_boss["speed"]
+
+            # Check collision with player bullets
+            for bullet in bullets[:]:
+                if final_boss["rect"].colliderect(bullet["rect"]):
+                    final_boss["health"] -= 15  # mini boss damage
+                    bullets.remove(bullet)
+                    if final_boss["health"] <= 0:
+                        final_boss["alive"] = False
+                        show_mini_boss_defeat_screen()
+                        level += 1
+                        score += 100
+                        final_boss["health"] = 1000
+            # Draw the final boss
+            game_window.blit(final_boss["image"], final_boss["rect"])
+            
 
 
             # Additional logic for level-up effects (e.g., increasing difficulty)
@@ -530,7 +603,7 @@ def main_game_loop():
             # Optionally, display a message or play a sound to signal the boss's arrival
         if mini_boss["alive"]:
             draw_mini_boss_health_bar()
-    # Update mini boss position
+            # Update mini boss position
             # Example: Simple left and right movement
             mini_boss["rect"].x += mini_boss["speed"]
             if mini_boss["rect"].left <= 0 or mini_boss["rect"].right >= window_width:
