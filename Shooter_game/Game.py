@@ -1,7 +1,6 @@
 import pygame
 import random
 import os
-import time
 
 # Initialize Pygame
 pygame.init()
@@ -569,7 +568,7 @@ def main_game_loop():
         if level > 15:
             show_game_finished_screen()
 
-        if level == 2 and not final_boss["alive"]:
+        if level == 15 and not final_boss["alive"]:
             # Initialize final boss fight
             enemies.clear()  # Clear other enemies
             bullets.clear()  # Optionally clear bullets
@@ -577,7 +576,13 @@ def main_game_loop():
             final_boss_activation_screen()
         if final_boss["alive"]:
             draw_final_boss_health_bar()
-            # Update mini boss position
+            if player_health <= 0:
+                        level -= 1
+                        score = 1299
+                        final_boss["alive"] = False
+                        enemies.clear()  # Clear other enemies
+                        bullets.clear()  # Optionally clear bullets
+            # Update final boss position
             # Example: Simple left and right movement
             final_boss["rect"].x += final_boss["speed"]
             if final_boss["rect"].left <= 0 or final_boss["rect"].right >= window_width:
