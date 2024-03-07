@@ -83,11 +83,11 @@ final_boss = {
     "alive": False  # Track if the boss is currently in the game
 }
 
-# Mini Boss Health Bar attributes
-Final_boss_health_bar_width = 200  # Adjust as needed
-Final_boss_health_bar_height = 10  # Adjust as needed
-Finl_boss_health_bar_x = window_width // 2 - mini_boss_health_bar_width // 2
-Final_boss_health_bar_y = 20  # Position above the mini boss or wherever fits best
+# final Boss Health Bar attributes
+final_boss_health_bar_width = 200  # Adjust as needed
+final_boss_health_bar_height = 10  # Adjust as needed
+final_boss_health_bar_x = window_width // 2 - mini_boss_health_bar_width // 2
+final_boss_health_bar_y = 20  # Position above the mini boss or wherever fits best
 # Define colors
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
@@ -135,15 +135,13 @@ enemies = []
 def draw_final_boss_health_bar():
     global RED, GREEN
     # Draw background bar (full health)
-    pygame.draw.rect(game_window, RED, (Finl_boss_health_bar_x, Final_boss_health_bar_y, Final_boss_health_bar_width, Final_boss_health_bar_height))
+    pygame.draw.rect(game_window, RED, (final_boss_health_bar_x, final_boss_health_bar_y, final_boss_health_bar_width, final_boss_health_bar_height))
 
     # Calculate current health bar width based on mini boss's health
-    current_health_bar_width = (final_boss["health"] / 1000) * Final_boss_health_bar_width  # Assuming 1000 is max health
+    current_health_bar_width = (final_boss["health"] / 1000) * final_boss_health_bar_width  # Assuming 1000 is max health
 
     # Draw foreground bar (current health)
-    pygame.draw.rect(game_window, GREEN, (Finl_boss_health_bar_x, Final_boss_health_bar_y, Final_boss_health_bar_width, Final_boss_health_bar_height))
-
-
+    pygame.draw.rect(game_window, GREEN, (final_boss_health_bar_x, final_boss_health_bar_y, current_health_bar_width, final_boss_health_bar_height))
 
 
 def draw_mini_boss_health_bar():
@@ -436,6 +434,7 @@ def main_game_loop():
     mini_boss_shoot_interval = 1200  # Milliseconds between shots
     final_boss_shoot_interval = 1000
     last_mini_boss_shoot_time = pygame.time.get_ticks()  # Initialize the timer
+    last_final_boss_shoot_time = pygame.time.get_ticks()  # Initialize the timer
     last_enemy_shoot_time = pygame.time.get_ticks()
     cherry_spawn_interval = random.randint(10000, 15000)  # milliseconds
     last_cherry_spawn_time = pygame.time.get_ticks()
@@ -554,6 +553,36 @@ def main_game_loop():
             # Draw the bullet
             else:
                 pygame.draw.rect(game_window, RED, bullet["rect"])  # Example bullet color
+        ###final boss####
+        if final_boss["alive"] and current_time - last_final_boss_shoot_time > final_boss_shoot_interval:
+            final_boss_shoot()
+            last_final_boss_shoot_time = current_time
+        if final_boss["alive"] and player_rect.colliderect(final_boss["rect"]):
+            player_health -= 20
+                # Flash the screen red to indicate damage
+            game_window.fill(RED)
+            pygame.display.update()
+            pygame.time.delay(25)  # 25 milliseconds delay for the red flash visibility
+            print (player_health)
+        for bullet in final_boss_bullets[:]:  # Use a copy of the list for safe removal
+            # Update bullet position
+            bullet["rect"].y += bullet["speed"]
+            
+            # Check for collision with player
+            if player_rect.colliderect(bullet["rect"]):
+                player_health -= 15  # Example damage to player
+                final_boss_bullets.remove(bullet)  # Remove the bullet
+                game_window.fill(RED)
+                pygame.display.update()
+                pygame.time.delay(25)  # Delay to allow the red flash to be visible
+            
+            # Remove bullet if it goes off-screen
+            elif bullet["rect"].top > window_height:
+                final_boss_bullets.remove(bullet)
+            
+            # Draw the bullet
+            else:
+                pygame.draw.rect(game_window, RED, bullet["rect"])  # Example bullet color
         
         # Example of incrementing level based on score
         if score >= 100 * level:
@@ -583,7 +612,6 @@ def main_game_loop():
                     bullets.remove(bullet)
                     if final_boss["health"] <= 0:
                         final_boss["alive"] = False
-                        show_mini_boss_defeat_screen()
                         level += 1
                         score += 100
                         final_boss["health"] = 1000

@@ -2,10 +2,7 @@
 
 ToDo: create a power up for the player to have a better gun.
 
-ToDo: Figure out if i want to add sound. 
-ToDo: Fix the final bosses health bar as it does not work other than it draws the first time.
-ToDo: fix the final boss so it shoots, You can just copy the mini boss set up asnd it should work just fine. 
-
+ToDo: Figure out if i want to add sound.
 
 
 
@@ -65,6 +62,10 @@ _____________________________________________
 
 Completed tasks:
 ToDo: make game window - Done
+
+ToDo: Fix the final bosses health bar as it does not work other than it draws the first time. - Complete
+ToDo: fix the final boss so it shoots, You can just copy the mini boss set up asnd it should work just fine. - complete
+
 
 ToDo: add the final boss to the game. - Complete
 
