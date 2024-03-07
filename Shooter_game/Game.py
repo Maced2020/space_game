@@ -424,7 +424,7 @@ def main_game_loop():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-                #exit()
+                exit()
             elif event.type == pygame.VIDEORESIZE:
                 # Update the game window size when resized and scale the background
                 window_width, window_height = event.w, event.h
