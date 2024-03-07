@@ -273,14 +273,6 @@ def show_game_over_screen():
     pygame.display.update()
     pygame.time.delay(1900)  # Short delay to prevent immediate restart
 
-    # Call wait_for_player_action and check if the game should restart
-    should_restart = wait_for_player_action()
-    if should_restart:
-        restart_game()
-        return True  # Indicate that the game should restart
-    else:
-        return False  # Indicate that the game should not restart
-
 
 def show_game_finished_screen():
     # Show the game over screen and wait for player action
@@ -294,12 +286,6 @@ def show_game_finished_screen():
     player_rect = player_image.get_rect(center=(window_width // 2, window_height - 50))
     pygame.display.update()
     pygame.time.delay(3500)  # Short delay to prevent immediate restart
-    should_restart = wait_for_player_action()
-    if should_restart:
-        restart_game()
-        return True  # Indicate that the game should restart
-    else:
-        return False  # Indicate that the game should not restart
 
 
 def restart_game():
@@ -314,19 +300,20 @@ def restart_game():
     
     level = 1  # Reset level to 1
     mini_boss["alive"] = False  # Reset mini boss to not being alive
+    final_boss["alive"] = False # Reset final boss to not being alive. 
 
 
 def wait_for_player_action():
     # This function waits for the player to press any key to restart the game
-    waiting = True
-    while waiting:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
-            if event.type == pygame.KEYDOWN:
-                restart_game()  # Reset game state before restarting
-                return  # Exit this function to proceed to restart the game
+     waiting = True
+     while waiting:
+         for event in pygame.event.get():
+             if event.type == pygame.QUIT:
+                 pygame.quit()
+                 exit()
+             if event.type == pygame.KEYDOWN:
+                 restart_game()  # Reset game state before restarting
+                 return  # Exit this function to proceed to restart the game
 
 
 def show_title_screen():
@@ -354,16 +341,6 @@ def show_title_screen():
 
 
 
-def wait_for_player_action():
-    # Wait for the player to press any key after a game over
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
-            if event.type == pygame.KEYDOWN:
-                # Return a flag indicating the game should restart
-                return True
 
 def show_mini_boss_defeat_screen():
     global WHITE, BLACK
@@ -447,6 +424,7 @@ def main_game_loop():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+                #exit()
             elif event.type == pygame.VIDEORESIZE:
                 # Update the game window size when resized and scale the background
                 window_width, window_height = event.w, event.h
@@ -591,7 +569,7 @@ def main_game_loop():
         if level > 15:
             show_game_finished_screen()
 
-        if level == 15 and not final_boss["alive"]:
+        if level == 2 and not final_boss["alive"]:
             # Initialize final boss fight
             enemies.clear()  # Clear other enemies
             bullets.clear()  # Optionally clear bullets
