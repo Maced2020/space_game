@@ -52,7 +52,19 @@ player_rect = player_image.get_rect(center=(window_width // 2, window_height - 5
 player_speed = 7.5
 move_left = move_right = move_up = move_down = False
 
-mini_boss_image = random.choice(mini_boss_list)
+mini_boss_list_index = 0
+
+
+def get_next_mini_boss():
+    global mini_boss_list_index, mini_boss_list
+        # Get the current mini-boss
+    mini_boss_image = mini_boss_list[mini_boss_list_index]
+    # Update the index to the next mini-boss
+    mini_boss_list_index = (mini_boss_list_index + 1) % len(mini_boss_list)
+    return mini_boss_image
+
+mini_boss_image = get_next_mini_boss()
+
 # Mini Boss attributes
 mini_boss = {
     "image": mini_boss_image,
@@ -342,11 +354,13 @@ def show_title_screen():
 
 
 def show_mini_boss_defeat_screen():
-    global WHITE, BLACK
+    global WHITE, BLACK, mini_boss_image
     game_window.fill(BLACK)  # Fill the screen with black or another background color
     font = pygame.font.SysFont(None, 74)  # Adjust the font size as needed
     level_up_text = font.render(f"Mini Boss DEFEATED!", True, WHITE)
     continue_text = font.render("Continue...", True, WHITE)
+    mini_boss_image = get_next_mini_boss()
+
     
     # Position the text in the center of the screen
     text_rect = level_up_text.get_rect(center=(window_width / 2, window_height / 2 - 50))
@@ -365,6 +379,7 @@ def show_mini_boss_start_screen():
     game_window.fill(BLACK)  # Fill the screen with black or another background color
     font = pygame.font.SysFont(None, 74)  # Adjust the font size as needed
     level_up_text = font.render(f"Mini Boss activated!", True, WHITE)
+    get_next_mini_boss()
     continue_text = font.render("Continue...", True, WHITE)
     
     # Position the text in the center of the screen
