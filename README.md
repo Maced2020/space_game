@@ -1,4 +1,3 @@
-Space Shooter Game
 Welcome to the Space Shooter game, an exciting arcade-style game developed using Pygame. Dive into the depths of space and battle through waves of enemies, mini-bosses, and the ultimate final boss to save the galaxy. Equip your spaceship with powerful bullets, collect health boosts, and navigate through an ever-increasing challenge.
 
 Features
