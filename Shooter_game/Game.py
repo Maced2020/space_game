@@ -17,17 +17,14 @@ pygame.display.set_caption("Space Shooter")
 background_image = pygame.image.load('Shooter_game/player/space.jpeg')
 background_image = pygame.transform.scale(background_image, (window_width, window_height))
 
-
 # Load the bullet image
 bullet_image = pygame.image.load("Shooter_game/player/Bullet.jpg").convert_alpha()
 enemy_bullet = pygame.image.load('Shooter_game/enemies/Enemy_bullet.jpg').convert_alpha()
 bullet_speed = -10  # Negative value for moving up. Adjust the speed as needed.
-print(enemy_bullet)
 
 cherry_image = pygame.image.load("Shooter_game/player/Cherry.jpg").convert_alpha()
 
 cherries = []
-
 
 # List to keep track of bullets
 bullets = []
@@ -35,14 +32,13 @@ enemy_bullets = []
 mini_boss_bullets = []
 final_boss_bullets = []
 
-#miniboss picture 
-
+# Mini-boss pictures
 mini_boss1 = pygame.image.load("Shooter_game/enemies/mini_bosses/Mini_boss.png").convert_alpha()
 mini_boss2 = pygame.image.load("Shooter_game/enemies/mini_bosses/Mini_boss_2.png").convert_alpha()
 mini_boss3 = pygame.image.load("Shooter_game/enemies/mini_bosses/Mini_boss_3.png").convert_alpha()
 mini_boss4 = pygame.image.load("Shooter_game/enemies/mini_bosses/Mini_boss_4.png").convert_alpha()
 
-mini_boss_list = (mini_boss1, mini_boss2, mini_boss3, mini_boss3, mini_boss4)
+mini_boss_list = [mini_boss1, mini_boss2, mini_boss3, mini_boss4]
 
 # Load the player ship image
 player_image = pygame.image.load("Shooter_game/player/Player_ship.jpg").convert_alpha()
@@ -54,10 +50,9 @@ move_left = move_right = move_up = move_down = False
 
 mini_boss_list_index = 0
 
-
 def get_next_mini_boss():
-    global mini_boss_list_index, mini_boss_list
-        # Get the current mini-boss
+    global mini_boss_list_index
+    # Get the current mini-boss
     mini_boss_image = mini_boss_list[mini_boss_list_index]
     # Update the index to the next mini-boss
     mini_boss_list_index = (mini_boss_list_index + 1) % len(mini_boss_list)
@@ -80,11 +75,8 @@ mini_boss_health_bar_height = 10  # Adjust as needed
 mini_boss_health_bar_x = window_width // 2 - mini_boss_health_bar_width // 2
 mini_boss_health_bar_y = 20  # Position above the mini boss or wherever fits best
 
-
-
 # Final Boss
 final_boss_image = pygame.image.load("Shooter_game/enemies/final_boss/final_boss.png").convert_alpha()
-
 
 final_boss = {
     "image": final_boss_image,
@@ -94,11 +86,12 @@ final_boss = {
     "alive": False  # Track if the boss is currently in the game
 }
 
-# final Boss Health Bar attributes
+# Final Boss Health Bar attributes
 final_boss_health_bar_width = 200  # Adjust as needed
 final_boss_health_bar_height = 10  # Adjust as needed
 final_boss_health_bar_x = window_width // 2 - mini_boss_health_bar_width // 2
 final_boss_health_bar_y = 20  # Position above the mini boss or wherever fits best
+
 # Define colors
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
@@ -115,30 +108,21 @@ score = 0
 level = 1
 player_health = 100
 
-
 # Create a clock object to control the frame rate
 clock = pygame.time.Clock()
 
 # Load enemy images into a list
 enemy_images = []
 enemy_folder_path = 'Shooter_game/enemies'  # Note the double backslashes for Windows paths
-print(f"Loading enemy images from: {enemy_folder_path}")
-
-enemy_images = []  # Make sure this is initialized before the loop
 
 for filename in os.listdir(enemy_folder_path):
     full_path = os.path.join(enemy_folder_path, filename)
     if filename.endswith('.png'):  # Assuming your enemy images are .png
-        print(f"Loading: {filename}")
         try:
             enemy_image = pygame.image.load(full_path).convert_alpha()
             enemy_images.append(enemy_image)
         except Exception as e:
             print(f"Failed to load {filename}: {e}")
-    else:
-        print(f"Skipping: {filename} (not a .png file)")
-
-print(f"Loaded {len(enemy_images)} enemy images.")
 
 # List to keep track of enemy instances
 enemies = []
@@ -153,7 +137,6 @@ def draw_final_boss_health_bar():
 
     # Draw foreground bar (current health)
     pygame.draw.rect(game_window, GREEN, (final_boss_health_bar_x, final_boss_health_bar_y, current_health_bar_width, final_boss_health_bar_height))
-
 
 def draw_mini_boss_health_bar():
     global RED, GREEN
@@ -190,9 +173,6 @@ def final_boss_shoot():
         final_boss_bullets.append({"rect": pygame.Rect(bullet1_pos[0], bullet1_pos[1], 10, 20), "speed": random_bullet_speed_one})
         final_boss_bullets.append({"rect": pygame.Rect(bullet2_pos[0], bullet2_pos[1], 10, 20), "speed": random_bullet_speed_two})
 
-
-
-# Function to create a new enemy with a random image and position
 def create_enemy():
     base_speed_y = 2  # Base vertical speed
     speed_increase_per_level = 0.5  # Increase speed by 0.5 for each level
@@ -206,15 +186,10 @@ def create_enemy():
     
     return {'image': image, 'rect': rect, 'speed_y': speed_y, 'speed_x': speed_x}
 
-
-
-#spawning cherry
 def spawn_cherry():
     rect = cherry_image.get_rect(center=(random.randint(0, window_width), -50))
     cherries.append({'rect': rect, 'speed': 2})  # Adjust speed as needed
 
-
-#shooting the bullet
 def shoot():
     bullet_rect = bullet_image.get_rect(center=(player_rect.centerx, player_rect.top))
     bullets.append({'rect': bullet_rect, 'speed': bullet_speed})
@@ -223,9 +198,6 @@ def enemy_shoot(enemy_rect):
     bullet_rect = enemy_bullet.get_rect(center=(enemy_rect.centerx, enemy_rect.bottom))
     enemy_bullets.append({'rect': bullet_rect, 'speed': 10})  # Positive speed for moving down
 
-
-
-# Function to add enemies to the game
 def add_enemy(interval, last_time):
     if not mini_boss['alive']:  # Only spawn enemies if the mini boss is not alive
         current_time = pygame.time.get_ticks()
@@ -234,8 +206,6 @@ def add_enemy(interval, last_time):
             return current_time
     return last_time
 
-
-# Function to draw the HUD
 def draw_hud():
     global YELLOW, GREEN, RED, WHITE
     # Render the score and level text
@@ -250,7 +220,6 @@ def draw_hud():
     health_bar_height = 5
     health_bar_x = 10
     health_bar_y = 50  # Position the health bar a little below the score
-
 
     # Determine health bar color based on current health percentage
     health_percentage = player_health / 100
@@ -268,9 +237,6 @@ def draw_hud():
     # Draw the health bar
     pygame.draw.rect(game_window, health_bar_color, (health_bar_x, health_bar_y, current_health_bar_width, health_bar_height))
 
-
-
-# gameover screen
 def show_game_over_screen():
     # Show the game over screen and wait for player action
     global level, score, player_health, player_rect, RED, WHITE, BLACK
@@ -284,20 +250,16 @@ def show_game_over_screen():
     pygame.display.update()
     pygame.time.delay(1900)  # Short delay to prevent immediate restart
 
-
 def show_game_finished_screen():
     # Show the game over screen and wait for player action
     global level, score, player_health, player_rect, RED, WHITE, BLACK, ROYAL_BLUE
     game_window.fill(ROYAL_BLUE)
     font = pygame.font.SysFont(None, 74)
     game_finished_text = font.render("YOU HAVE BEAT THE GAME!", True, WHITE)
-    restart_text = font.render("Press any key to restart", True, WHITE)
     game_window.blit(game_finished_text, (window_width / 2 - game_finished_text.get_width() / 2, window_height / 2 - game_finished_text.get_height()))
-    game_window.blit(restart_text, (window_width / 2 - restart_text.get_width() / 2, window_height / 2 + restart_text.get_height()))
     player_rect = player_image.get_rect(center=(window_width // 2, window_height - 50))
     pygame.display.update()
     pygame.time.delay(3500)  # Short delay to prevent immediate restart
-
 
 def restart_game():
     global score, player_health, enemies, cherries, level
@@ -313,7 +275,6 @@ def restart_game():
     mini_boss["alive"] = False  # Reset mini boss to not being alive
     final_boss["alive"] = False # Reset final boss to not being alive. 
 
-
 def wait_for_player_action():
     # This function waits for the player to press any key to restart the game
      waiting = True
@@ -325,7 +286,6 @@ def wait_for_player_action():
              if event.type == pygame.KEYDOWN:
                  restart_game()  # Reset game state before restarting
                  return  # Exit this function to proceed to restart the game
-
 
 def show_title_screen():
     global WHITE, BLACK
@@ -350,17 +310,13 @@ def show_title_screen():
             if event.type == pygame.KEYDOWN:
                 return  # Exit the function and proceed to the game
 
-
-
-
 def show_mini_boss_defeat_screen():
     global WHITE, BLACK, mini_boss_image
     game_window.fill(BLACK)  # Fill the screen with black or another background color
     font = pygame.font.SysFont(None, 74)  # Adjust the font size as needed
     level_up_text = font.render(f"Mini Boss DEFEATED!", True, WHITE)
     continue_text = font.render("Continue...", True, WHITE)
-    mini_boss_image = get_next_mini_boss()
-
+    mini_boss_image = get_next_mini_boss()  # Update the mini_boss_image
     
     # Position the text in the center of the screen
     text_rect = level_up_text.get_rect(center=(window_width / 2, window_height / 2 - 50))
@@ -375,11 +331,12 @@ def show_mini_boss_defeat_screen():
     pygame.time.delay(2000)  # 3000 milliseconds = 3 seconds
 
 def show_mini_boss_start_screen():
-    global WHITE, BLACK
+    global WHITE, BLACK, mini_boss_image, mini_boss
     game_window.fill(BLACK)  # Fill the screen with black or another background color
     font = pygame.font.SysFont(None, 74)  # Adjust the font size as needed
     level_up_text = font.render(f"Mini Boss activated!", True, WHITE)
-    get_next_mini_boss()
+    mini_boss["image"] = mini_boss_image
+    mini_boss["rect"] = mini_boss_image.get_rect(center=(window_width // 2, 100))
     continue_text = font.render("Continue...", True, WHITE)
     
     # Position the text in the center of the screen
@@ -413,8 +370,6 @@ def final_boss_activation_screen():
     # Pause the game for a few seconds
     pygame.time.delay(3000)  # 3000 milliseconds = 3 seconds
 
-
-
 def main_game_loop():
     global game_window, background_image, move_left, move_right, move_up
     global move_down, window_width, window_height, player_health, score, level 
@@ -432,20 +387,15 @@ def main_game_loop():
     running = True
     while running:
         clock.tick(60)  # Control the frame rate to be 60 FPS
-                # Draw the background image
         game_window.blit(background_image, (0, 0))
-        # Event handling and player movement updates
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
                 exit()
             elif event.type == pygame.VIDEORESIZE:
-                # Update the game window size when resized and scale the background
                 window_width, window_height = event.w, event.h
                 game_window = pygame.display.set_mode((window_width, window_height), pygame.RESIZABLE)
                 background_image = pygame.transform.scale(background_image, (window_width, window_height))
-                # Reposition the HUD elements
-                level_text = font.render(f'Level: {level}', True, WHITE)
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     move_left = True
@@ -465,12 +415,9 @@ def main_game_loop():
                 if event.key == pygame.K_DOWN:
                     move_down = False
             if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_SPACE:
-                        shoot()
+                if event.key == pygame.K_SPACE:
+                    shoot()
 
-
-
-        # Update bullet positions and check for collisions
         for bullet in bullets[:]:  # Iterate over a copy of the bullets list
             bullet['rect'].y += bullet['speed']
             if bullet['rect'].bottom < 0:
@@ -495,7 +442,6 @@ def main_game_loop():
                 game_window.fill(RED)
                 pygame.display.update()
                 pygame.time.delay(25) 
-
             else:
                 game_window.blit(enemy_bullet, bullet['rect'])
         for cherry in cherries[:]:  # Iterate over a copy of the list
@@ -509,7 +455,6 @@ def main_game_loop():
                 game_window.fill(GREEN)
                 pygame.display.update()
                 pygame.time.delay(25) 
-
             else:
                 game_window.blit(cherry_image, cherry['rect'])
         current_time = pygame.time.get_ticks()
@@ -521,70 +466,46 @@ def main_game_loop():
             last_mini_boss_shoot_time = current_time
         if mini_boss["alive"] and player_rect.colliderect(mini_boss["rect"]):
             player_health -= 15
-                # Flash the screen red to indicate damage
             game_window.fill(RED)
             pygame.display.update()
             pygame.time.delay(25)  # 25 milliseconds delay for the red flash visibility
-            print (player_health)
         for bullet in mini_boss_bullets[:]:  # Use a copy of the list for safe removal
-            # Update bullet position
             bullet["rect"].y += bullet["speed"]
-            
-            # Check for collision with player
             if player_rect.colliderect(bullet["rect"]):
                 player_health -= 15  # Example damage to player
                 mini_boss_bullets.remove(bullet)  # Remove the bullet
                 game_window.fill(RED)
                 pygame.display.update()
                 pygame.time.delay(25)  # Delay to allow the red flash to be visible
-            
-            # Remove bullet if it goes off-screen
             elif bullet["rect"].top > window_height:
                 mini_boss_bullets.remove(bullet)
-            
-            # Draw the bullet
             else:
                 pygame.draw.rect(game_window, RED, bullet["rect"])  # Example bullet color
-        ###final boss####
         if final_boss["alive"] and current_time - last_final_boss_shoot_time > final_boss_shoot_interval:
             final_boss_shoot()
             last_final_boss_shoot_time = current_time
         if final_boss["alive"] and player_rect.colliderect(final_boss["rect"]):
             player_health -= 20
-                # Flash the screen red to indicate damage
             game_window.fill(RED)
             pygame.display.update()
             pygame.time.delay(25)  # 25 milliseconds delay for the red flash visibility
-            print (player_health)
         for bullet in final_boss_bullets[:]:  # Use a copy of the list for safe removal
-            # Update bullet position
             bullet["rect"].y += bullet["speed"]
-            
-            # Check for collision with player
             if player_rect.colliderect(bullet["rect"]):
                 player_health -= 15  # Example damage to player
                 final_boss_bullets.remove(bullet)  # Remove the bullet
                 game_window.fill(RED)
                 pygame.display.update()
                 pygame.time.delay(25)  # Delay to allow the red flash to be visible
-            
-            # Remove bullet if it goes off-screen
             elif bullet["rect"].top > window_height:
                 final_boss_bullets.remove(bullet)
-            
-            # Draw the bullet
             else:
                 pygame.draw.rect(game_window, RED, bullet["rect"])  # Example bullet color
-        
-        # Example of incrementing level based on score
         if score >= 100 * level:
             level += 1
-
         if level > 15:
             show_game_finished_screen()
-
         if level == 15 and not final_boss["alive"]:
-            # Initialize final boss fight
             enemies.clear()  # Clear other enemies
             bullets.clear()  # Optionally clear bullets
             final_boss["alive"] = True
@@ -592,18 +513,14 @@ def main_game_loop():
         if final_boss["alive"]:
             draw_final_boss_health_bar()
             if player_health <= 0:
-                        level -= 1
-                        score = 1299
-                        final_boss["alive"] = False
-                        enemies.clear()  # Clear other enemies
-                        bullets.clear()  # Optionally clear bullets
-            # Update final boss position
-            # Example: Simple left and right movement
+                level -= 1
+                score = 1299
+                final_boss["alive"] = False
+                enemies.clear()  # Clear other enemies
+                bullets.clear()  # Optionally clear bullets
             final_boss["rect"].x += final_boss["speed"]
             if final_boss["rect"].left <= 0 or final_boss["rect"].right >= window_width:
                 final_boss["speed"] = -final_boss["speed"]
-
-            # Check collision with player bullets
             for bullet in bullets[:]:
                 if final_boss["rect"].colliderect(bullet["rect"]):
                     final_boss["health"] -= 15  # mini boss damage
@@ -613,29 +530,18 @@ def main_game_loop():
                         level += 1
                         score += 100
                         final_boss["health"] = 1000
-            # Draw the final boss
             game_window.blit(final_boss["image"], final_boss["rect"])
-            
-
-
-            # Additional logic for level-up effects (e.g., increasing difficulty)
         if level % 3 == 0 and level < 13 and not mini_boss["alive"]:
-             #this is when the mini boss shows up.
             enemies.clear()  # Clear existing enemies
             bullets.clear()
             mini_boss_bullets.clear()
             mini_boss["alive"] = True  # Mark the mini boss as active
             show_mini_boss_start_screen()
-            # Optionally, display a message or play a sound to signal the boss's arrival
         if mini_boss["alive"]:
             draw_mini_boss_health_bar()
-            # Update mini boss position
-            # Example: Simple left and right movement
             mini_boss["rect"].x += mini_boss["speed"]
             if mini_boss["rect"].left <= 0 or mini_boss["rect"].right >= window_width:
                 mini_boss["speed"] = -mini_boss["speed"]
-            
-            # Check collision with player bullets
             for bullet in bullets[:]:
                 if mini_boss["rect"].colliderect(bullet["rect"]):
                     mini_boss["health"] -= 15  # mini boss damage
@@ -646,20 +552,14 @@ def main_game_loop():
                         level += 1
                         score += 100
                         mini_boss["health"] = 500
-            # Draw the mini boss
             game_window.blit(mini_boss["image"], mini_boss["rect"])
-
         current_time = pygame.time.get_ticks()
         if current_time - last_enemy_shoot_time > enemy_shoot_interval:
             for enemy in enemies:
                 enemy_shoot(enemy['rect'])
             last_enemy_shoot_time = current_time
-        
-        # Drawing code: clear screen, draw bullets, enemies, player, HUD
-        # game_window.blit(background_image, (0, 0))
         for bullet in bullets:
             game_window.blit(bullet_image, bullet['rect'])
-        # Update player position based on movement flags
         if move_left and player_rect.left > 0:
             player_rect.x -= player_speed
         if move_right and player_rect.right < window_width:
@@ -668,46 +568,29 @@ def main_game_loop():
             player_rect.y -= player_speed
         if move_down and player_rect.bottom < window_height:
             player_rect.y += player_speed
-          # Call add_enemy function to spawn enemies
         last_enemy_spawn_time = add_enemy(enemy_spawn_interval, last_enemy_spawn_time)
-
-        #bounces enemies off walls
         for enemy in list(enemies):
             enemy['rect'].y += enemy['speed_y']
             enemy['rect'].x += enemy['speed_x']
-            
-            # Check for collision with the player
             if player_rect.colliderect(enemy['rect']):
                 player_health -= 10  # Decrease player health by 10 (adjust as needed)
-                print(player_health)
                 player_health = max(player_health, 0)  # Ensure health doesn't go below 0
                 enemies.remove(enemy)  # Remove the enemy that collided with the player
-                # Flash the screen red
                 game_window.fill(RED)
                 pygame.display.update()
                 pygame.time.delay(25)  # Delay to allow the red flash to be visible
-            
             if enemy['rect'].y > window_height or enemy['rect'].right < 0 or enemy['rect'].left > window_width:
                 enemies.remove(enemy)  # Remove the enemy if it goes off the bottom or sides of the screen
             else:
                 game_window.blit(enemy['image'], enemy['rect'])
-        
         if player_health <= 0:
             show_game_over_screen()
             player_health = 100  # Reset health for a new game
-
-
-        # Draw the HUD
         draw_hud()
-        # Draw the player ship
         game_window.blit(player_image, player_rect)
-        # Update the display
         pygame.display.update()
 
-
-# Show the title screen
 show_title_screen()
-# Call the main game loop function
 main_game_loop()
 
 def main():
@@ -724,8 +607,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
 
 # Quit Pygame
 pygame.quit()
